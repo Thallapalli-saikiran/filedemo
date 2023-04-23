@@ -1,0 +1,125 @@
+public static void main(String[] args) throws InterruptedException {
+		int sum=0,sum1=0,totsum;
+		System.setProperty("webdriver.chrome.driver","C:\\\\Users\\\\SAI KIRAN\\\\WebDrivers\\\\ChromeDriver100\\\\chromedriver.exe");
+		ChromeDriver driver = new ChromeDriver();
+		driver.get("https://staging-ag.entreda.com/user/login");
+		Thread.sleep(2000);
+		String username="Oct11_SA";
+		String pass="EntredaUnify@435";
+		driver.findElement(By.xpath("//input[@placeholder=\'Username\']")).sendKeys(username);
+		driver.findElement(By.xpath("//input[@id='edit-pass']")).sendKeys(pass);
+		driver.findElement(By.xpath("//button[contains(@type,'Go')]")).click();
+		//driver.manage().window().maximize();
+		
+		try{Thread.sleep(8000);}catch(InterruptedException e){System.out.println(e);} 
+		
+		WebElement table= driver.findElement(By.xpath("//*[@id=\"computeTable\"]/tbody"));
+		List<WebElement> tableRows= table.findElements(By.tagName("tr")); 
+		int rowNumber=tableRows.size();
+		System.out.println("Table Row Numbers: "+rowNumber );
+		        
+		List<WebElement> Elements = driver.findElements(By.xpath("//*[@id=\"computeTable\"]/tbody/tr[1]/td"));
+		int ColumnNymber = Elements.size();
+		System.out.println("Column Count: "+ColumnNymber);
+		
+		ArrayList<ArrayList<String>> data = new ArrayList<ArrayList<String>>();
+		int k;
+		for(int i=1;i<=rowNumber;i++)
+        {
+        	System.out.println("Printing values for Row Number: "+ i);
+        	data.add(new ArrayList<String> ());
+        	for(int j=1;j<=ColumnNymber;j++)
+        	{
+        		
+        		if (i == 1)
+        		{
+        			//data.get(j-1).add(driver.findElement(By.xpath("//table[@id='computeTable']/tbody/tr/td["+j+"]")).getText());
+        			System.out.println("Table Cell Values for row column ("+i+","+j+"): "+ driver.findElement(By.xpath("//table[@id='computeTable']/tbody/tr/td["+j+"]")).getText());
+        			data.get(0).add(driver.findElement(By.xpath("//table[@id='computeTable']/tbody/tr/td["+j+"]")).getText());
+        		}
+        		else
+        		{
+        		k=i-1;
+        		//System.out.println("K value:"+k);
+        		data.get(k).add(driver.findElement(By.xpath("//table[@id='computeTable']/tbody/tr["+i+"]/td["+j+"]")).getText());
+        		System.out.println("Table Cell Values for row column ("+i+","+j+"): "+ driver.findElement(By.xpath("//table[@id='computeTable']/tbody/tr["+i+"]/td["+j+"]")).getText());
+        		
+        		}
+        	}
+        }
+        	   
+	           int a1[]= new int [rowNumber];
+	            for(int i=0;i<rowNumber;i++) {
+		       //System.out.println(data.get(i));
+	 
+	            a1[i]=Integer.parseInt(data.get(i).get(4));
+	            System.out.println(a1[i]);
+	}	            System.out.println("========Getting Compute Table sum============");
+
+	            for(int i=0;i<rowNumber;i++) {
+
+	            sum=sum+a1[i];
+	            }
+	            System.out.println("Sum Of Compute Table:"+sum);
+	            double average = sum/rowNumber;
+	            System.out.println("Average of CyberScore is "+average);
+                
+                WebElement table2= driver.findElement(By.xpath("//*[@id=\"mobileTable\"]/tbody"));
+        		List<WebElement> tableRows2= table2.findElements(By.tagName("tr")); 
+        		int rowNumber2=tableRows2.size();
+        		System.out.println("Table Row Numbers: "+rowNumber2 );
+        		        
+        		List<WebElement> Elements2 = driver.findElements(By.xpath("//*[@id=\"mobileTable\"]/tbody/tr[1]/td"));//*[@id=\"computeTable\"]/tbody/tr[1]/td
+        		int ColumnNymber2 = Elements2.size();
+        		System.out.println("Column Count: "+ColumnNymber2);
+        		
+        		ArrayList<ArrayList<String>> data2 = new ArrayList<ArrayList<String>>();
+        		int k1;
+        		for(int i=1;i<=rowNumber2;i++)
+                {
+                	System.out.println("Printing values for Row Number: "+ i);
+                	data2.add(new ArrayList<String> ());
+                	for(int j=1;j<=ColumnNymber2;j++)
+                	{
+                		
+                		if (i == 1)
+                		{
+                			//data.get(j-1).add(driver.findElement(By.xpath("//table[@id='computeTable']/tbody/tr/td["+j+"]")).getText());
+                			System.out.println("Table Cell Values for row column ("+i+","+j+"): "+ driver.findElement(By.xpath("//table[@id='mobileTable']/tbody/tr/td["+j+"]")).getText());
+                			data2.get(0).add(driver.findElement(By.xpath("//table[@id='mobileTable']/tbody/tr/td["+j+"]")).getText());
+                		}
+                		else
+                		{
+                		k1=i-1;
+                		//System.out.println("K value:"+k);
+                		data2.get(k1).add(driver.findElement(By.xpath("//table[@id='mobileTable']/tbody/tr["+i+"]/td["+j+"]")).getText());
+                		System.out.println("Table Cell Values for row column ("+i+","+j+"): "+ driver.findElement(By.xpath("//table[@id='mobileTable']/tbody/tr["+i+"]/td["+j+"]")).getText());
+                		
+                		}
+                	}
+                }  
+        			
+             //mobileTableDiv   
+                	   
+        	            int a2[]= new int [rowNumber2];
+        	            for(int i=0;i<rowNumber2;i++) {
+        		       //System.out.println(data.get(i));
+        	            	a2[i]=Integer.parseInt(data2.get(i).get(4));
+        		            System.out.println(a2[i]);
+        		            }	            
+        	            System.out.println("========Getting Mobile Table sum============");
+        		            for(int i=0;i<rowNumber2;i++) {
+
+        		            sum1=sum1+a2[i];
+        		            }
+        		            
+        		            System.out.println("Sum of Mobile Table :"+sum1);
+        	            double average2 = sum1/rowNumber2;
+        	            System.out.println("Average of CyberScore is "+average2);
+                        System.out.println("Average score in portal is : "+ driver.findElement(By.xpath("//div[@class=\"score\"]")).getText());
+                        
+                        double total_avg=(average+average2)/2;
+                        System.out.println("Total Average of Score:"+total_avg);
+	}
+	}
+	
